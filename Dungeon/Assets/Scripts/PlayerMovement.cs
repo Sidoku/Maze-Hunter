@@ -9,31 +9,31 @@ public class PlayerMovement : MonoBehaviour {
     public LayerMask walkableMask;
     
     [Header("Movement")]
-    public float speed = 12f;
-    // public float jumpHeight = 2f;
+    public float speed = 13f;
+    public float jumpHeight = 0f;
     
     [Header("Auto Run")]
     public bool useAutoRun = true;
-    public KeyCode autoRunKey = KeyCode.R;
+    public KeyCode autoRunKey = KeyCode.Q;
     
     [Header("Sprint")]
     public bool useSprint = true;
     public KeyCode sprintKey = KeyCode.LeftShift;
 
     CharacterController controller;
-    // Transform groundCheck;
+    Transform groundCheck;
     Vector3 velocity;
     float speedMultiplier;
-    // float gravity;
-    // bool isGrounded;
+    float gravity;
+    bool isGrounded;
     bool isRunning;
 
     void Start() 
     {
         Physics.gravity = Vector3.down * 20;
         controller = GetComponent<CharacterController>();
-        // groundCheck = transform.Find("GroundCheck");
-        // gravity = Physics.gravity.y;
+        groundCheck = transform.Find("GroundCheck");
+        gravity = Physics.gravity.y;
         Cursor.visible = false;
     }
 
@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour {
             isRunning = !isRunning; 
         }
 
-        // isGrounded = Physics.CheckSphere(groundCheck.position, 0.2f, walkableMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, 0.2f, walkableMask);
 
         float horz = Input.GetAxis("Horizontal");
         float vert = Input.GetAxis("Vertical");
@@ -60,12 +60,12 @@ public class PlayerMovement : MonoBehaviour {
 
         controller.Move(motion * speed * speedMultiplier * Time.deltaTime);
 
-        // if(Input.GetButtonDown("Jump") && isGrounded) 
-        // {
-        //     velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        // }
+        if(Input.GetButtonDown("Jump") && isGrounded) 
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
 
-        // velocity.y += gravity * Time.deltaTime;
+        velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
         transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
