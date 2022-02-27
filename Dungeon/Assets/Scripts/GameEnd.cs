@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameEnd : MonoBehaviour
 {
@@ -32,5 +33,10 @@ public class GameEnd : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         Time.timeScale = 0;
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
